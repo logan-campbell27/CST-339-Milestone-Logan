@@ -2,6 +2,8 @@ package com.gcu;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,9 @@ public class OrdersController {
 
 	@Autowired
 	private OrdersDataService ordersDAO;
+
+	Logger logger = LoggerFactory.getLogger(OrdersController.class);
+
 
 	@Autowired
 	public OrdersController(OrdersDataService s){
@@ -48,7 +53,7 @@ public class OrdersController {
 	public String index(Model model){
 		// List<OrderModel> orders = ordersService.getOrders();
 		List<OrderModel> orders = ordersDAO.getOrders();
-		
+		logger.info("Got orders");
 		model.addAttribute("orders",orders);
 		
 		return "orders";
