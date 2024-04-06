@@ -29,7 +29,7 @@ public class LoginController {
 	public String display(Model model) {
 		model.addAttribute("title", "Login Form");
 		model.addAttribute("loginModel", new LoginModel());
-
+		logger.info("Login page accessed");
 		return "login";
 	}
 
@@ -39,6 +39,7 @@ public class LoginController {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("title", "Login Form");
+			logger.error("LOGIN FAILED");
 			return "login";
 		}
 
@@ -55,11 +56,13 @@ public class LoginController {
 			// model.addAttribute("title", "Products:");
 			// model.addAttribute("orders", orders);
 			// return "orders";
+			logger.info("Login completed successfully");
 			return "redirect:/orders/";
 
 		}
 
 		else {
+			logger.warn("Unknown issue, please login again");
 			return "login";
 		}
 

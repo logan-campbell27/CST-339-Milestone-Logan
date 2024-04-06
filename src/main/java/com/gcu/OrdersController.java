@@ -53,7 +53,7 @@ public class OrdersController {
 	public String index(Model model){
 		// List<OrderModel> orders = ordersService.getOrders();
 		List<OrderModel> orders = ordersDAO.getOrders();
-		logger.info("Got orders");
+		logger.info("Got orders successfully");
 		model.addAttribute("orders",orders);
 		
 		return "orders";
@@ -63,6 +63,7 @@ public class OrdersController {
 	public String SearchForOrder(@RequestParam(name="search", required=false) String search, Model model){
 
 		List<OrderModel> orders = ordersDAO.searchOrders(search); 
+		logger.info("Searching for "+search+" found "+orders.size()+" items");
 		model.addAttribute("orders", orders);
 		
 		return "orders";
@@ -95,6 +96,7 @@ public class OrdersController {
 	@GetMapping("/new")
 	public String newOrder(Model model){
 		model.addAttribute("order", new OrderModel());
+		logger.info("Entering new orders page");
 		return "newOrder";
 	}
 	
@@ -102,6 +104,7 @@ public class OrdersController {
 	@PostMapping("/processNew")
 	public String processNew(OrderModel order){
 		ordersDAO.addOne(order);
+		logger.info("Product "+order.toString()+" created");
 		return "redirect:/orders/";
 	}
 
@@ -109,6 +112,7 @@ public class OrdersController {
 	@GetMapping("/edit/{id}")
 	public String editOrder(@PathVariable(value="id") Integer id, Model model){
 		model.addAttribute("order", ordersDAO.getById(id));
+		logger.info("Editing product number "+id);
 		return "editOrder";
 	}
 
@@ -116,6 +120,7 @@ public class OrdersController {
 	@PostMapping("edit/processEdit")
 	public String processEdit(OrderModel order){
 		ordersDAO.updateOne(order.getId(), order);
+		logger.info("product edited");
 		return "redirect:/orders/";
 	}
 
@@ -130,6 +135,7 @@ public class OrdersController {
 	@GetMapping("/delete/{id}")
 	public String deleteOrder(@PathVariable(value = "id")Integer id, Model model){
 		ordersDAO.deleteOne(id);
+		logger.info("Product "+id+" deleted");
 		return "redirect:/orders/";
 
 	}

@@ -42,13 +42,14 @@ public class RegistrationController{
 	public String display(Model model) {
 		model.addAttribute("title", "Registration Form");
 		model.addAttribute("registrationModel", new RegistrationModel());
-		
+		logger.info("Registration page loaded");
 		return "registration";
 	}
 
 	@PostMapping("/add")
     public RegistrationModel addUser(@RequestBody RegistrationModel addUser){
         regService.addOne(addUser);
+		logger.info("Adding user");
 		return addUser;
     }
 	
@@ -62,10 +63,12 @@ public class RegistrationController{
 
 		if(bindingResult.hasErrors()) {
 			model.addAttribute("title", "Registration Form");
+			logger.error(bindingResult.getErrorCount()+" ERRORS FOUND");
 			return "registration";
 		}
 		
 		else if(securityService.isAuthenticated(attemptReg)){
+			logger.warn("User already exists");
 			return "registration";
 	
 		}
@@ -74,6 +77,8 @@ public class RegistrationController{
 			List<OrderModel> orders = ordersService.getOrders();
 			model.addAttribute("title","Products:");
 			model.addAttribute("orders",orders);
+			logger.info("User registered");
+
 			return "orders";
 		}
 		
